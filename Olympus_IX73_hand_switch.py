@@ -6,7 +6,7 @@ from msvcrt import getch
 
 def send_command (ser, command):
     """ Send a text command to the microscope controller"""
-	ser.write (command+'\r\n')
+    ser.write (command+'\r\n')
     time.sleep(0.2)
     message = ser.read(ser.inWaiting())
     if message == 'x\r\n':
@@ -16,7 +16,7 @@ def send_command (ser, command):
 
 def log_on ():
     """ Connect to microscope controller and return a serial port handle"""
-	ser = serial.Serial(
+    ser = serial.Serial(
         port='COM1',
         baudrate=19200,
         parity=serial.PARITY_EVEN,
@@ -24,18 +24,18 @@ def log_on ():
         bytesize=serial.EIGHTBITS
     )
     send_command (ser, '1L 1')
-    return (ser)
+    return ser
 
 def log_off (ser):
     """ Close the shutter, turn off remote control of microscope, close the port"""
-	manipulate_shutter(ser,1)
+    manipulate_shutter(ser,1)
     send_command (ser, '1L 0')
     ser.close()
 
     
 def manipulate_shutter (ser, close): 
     """ If close == 1, then close shutter, if 0, then open shutter """
-	send_command (ser, '1ESH1 '+str(close))
+    send_command (ser, '1ESH1 '+str(close))
     
 def switch_reflector_turret (ser, position):
     send_command (ser, '1MU1 '+str(position))
